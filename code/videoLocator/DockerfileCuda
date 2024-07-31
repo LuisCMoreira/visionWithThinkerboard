@@ -1,0 +1,32 @@
+# Use a base image with GPU support (e.g., NVIDIA CUDA image)
+FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
+
+# Set the working directory
+WORKDIR /app
+
+# Copy your OpenCV code into the container
+COPY . /app
+
+# Install any necessary dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    python3-dev \
+    libsdl2-dev \
+    libsdl2-image-dev \
+    libsdl2-ttf-dev \
+    cmake \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install any additional Python dependencies
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Set environment variables for CUDA
+ENV CUDA_HOME /usr/local/cuda
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${CUDA_HOME}/lib64
+
+# Expose any necessary ports (if applicable)
+EXPOSE 1883
+
+# Run your Python script that uses OpenCV with GPU support
+CMD ["python", "smileTracker.py"]
