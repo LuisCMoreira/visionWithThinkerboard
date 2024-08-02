@@ -1,19 +1,6 @@
 @echo off
 setlocal
 
-echo -
-echo ----- Building Cascade Locator -----
-echo -
-
-cd "./videoStream"
-docker build -f Dockerfile -t streamVideo .   
-cd ..
-
-docker tag streamVideo lcmoreira/stream:latest
-
-docker rmi streamVideo
-
-
 
 
 echo -
